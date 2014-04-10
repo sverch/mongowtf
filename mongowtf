@@ -6,6 +6,9 @@ import re
 import json
 import yaml
 
+script_location = os.path.abspath(os.path.dirname(os.path.realpath(__file__)))
+project_data_directory = os.path.join(script_location, 'module_data/mongo-2.6.0')
+sys.path.append(os.path.join(script_location, 'willitlink'))
 from project_browser.data_access import read_project_structure_file, load_willitlink_graph, write_project_structure_file
 
 def print_file_info(project_data, file_name):
@@ -32,8 +35,6 @@ def main():
         exit(1)
 
     file_name = sys.argv[1]
-    default_cwd = os.path.abspath(os.path.dirname(os.path.realpath(__file__)))
-    project_data_directory = os.path.join(default_cwd, 'module_data/mongo-2.6.0')
 
     project_data = read_project_structure_file(project_data_directory)
 
