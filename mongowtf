@@ -1,0 +1,46 @@
+#!/usr/bin/python
+
+import sys
+import os
+import re
+import json
+import yaml
+
+from project_browser.data_access import read_project_structure_file, load_willitlink_graph, write_project_structure_file
+
+def print_file_info(project_data, file_name):
+    # First remove things from our project data that we no longer have
+    for system_object in project_data:
+        for module_object in system_object['system_modules']:
+            for group_object in module_object['module_groups']:
+                if file_name in group_object['group_files']:
+                    print "System name: " + system_object['system_title']
+                    print "System description: " + system_object['system_description']
+                    print ""
+                    print "    Module name: " + module_object['module_title']
+                    print "    Module description: " + module_object['module_description']
+                    print ""
+                    print "        Group name: " + group_object['group_title']
+                    print "        Group description: " + group_object['group_description']
+                    print "        Group files: " + str(group_object['group_files'])
+                    print ""
+
+def main():
+
+    if len(sys.argv) != 2:
+        print "Usage: <file_name>"
+        exit(1)
+
+    file_name = sys.argv[1]
+    default_cwd = os.path.abspath(os.path.dirname(os.path.realpath(__file__)))
+    project_data_directory = os.path.join(default_cwd, 'module_data/mongo-2.6.0')
+
+    project_data = read_project_structure_file(project_data_directory)
+
+    # TODO?
+    #graph = load_willitlink_graph(project_data_directory)
+
+    print_file_info(project_data, file_name)
+
+if __name__ == '__main__':
+    main()
