@@ -1,0 +1,3 @@
+[submodule "module_data"]
+	path = module_data
+	url = git://github.com/Zarkantho/module_data.git
