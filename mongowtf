@@ -6,17 +6,21 @@ import re
 import json
 import yaml
 
+version = '2.6.0'
+version_module_data = 'mongo-' + version
 script_location = os.path.abspath(os.path.dirname(os.path.realpath(__file__)))
-project_data_directory = os.path.join(script_location, 'module_data/mongo-2.6.0')
+project_data_directory = os.path.join(script_location, 'module_data', version_module_data)
 sys.path.append(os.path.join(script_location, 'willitlink'))
 from project_browser.data_access import read_project_structure_file, load_willitlink_graph, write_project_structure_file
 
 def print_file_info(project_data, file_name):
+    file_found = False
     # First remove things from our project data that we no longer have
     for system_object in project_data:
         for module_object in system_object['system_modules']:
             for group_object in module_object['module_groups']:
                 if file_name in group_object['group_files']:
+                    file_found = True
                     print "System name: " + system_object['system_title']
                     print "System description: " + system_object['system_description']
                     print ""
@@ -27,6 +31,8 @@ def print_file_info(project_data, file_name):
                     print "        Group description: " + group_object['group_description']
                     print "        Group files: " + str(group_object['group_files'])
                     print ""
+    if not file_found:
+        print "No file with name: " + file_name + " found.  Use the full path to the file starting at the root of the mongodb repo.  Data is based on MongoDB server version: " + version
 
 def main():
 
