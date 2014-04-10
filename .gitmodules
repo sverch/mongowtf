@@ -1,3 +1,6 @@
 [submodule "module_data"]
 	path = module_data
 	url = git://github.com/Zarkantho/module_data.git
+[submodule "willitlink"]
+	path = willitlink
+	url = git://github.com/Zarkantho/willitlink.git
