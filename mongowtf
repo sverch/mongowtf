@@ -6,6 +6,8 @@ import re
 import json
 import yaml
 
+from collections import OrderedDict
+
 version = '2.6.0'
 version_module_data = 'mongo-' + version
 script_location = os.path.abspath(os.path.dirname(os.path.realpath(__file__)))
@@ -14,23 +16,26 @@ sys.path.append(os.path.join(script_location, 'willitlink'))
 from project_browser.data_access import read_project_structure_file, load_willitlink_graph, write_project_structure_file
 
 def print_file_info(project_data, file_name):
+    system_object_to_print = OrderedDict()
     file_found = False
-    # First remove things from our project data that we no longer have
     for system_object in project_data:
+        module_object_to_print = OrderedDict()
         for module_object in system_object['system_modules']:
             for group_object in module_object['module_groups']:
                 if file_name in group_object['group_files']:
+
+                    module_object_to_print['module_title'] = module_object['module_title']
+                    module_object_to_print['module_description'] = module_object['module_description']
+                    module_object_to_print['module_group'] = group_object
+
+                    system_object_to_print['system_title'] = system_object['system_title']
+                    system_object_to_print['system_description'] = system_object['system_description']
+                    system_object_to_print['system_module'] = module_object_to_print
+
+                    print yaml.dump(system_object_to_print, indent=4, default_flow_style=False)
+
                     file_found = True
-                    print "System name: " + system_object['system_title']
-                    print "System description: " + system_object['system_description']
-                    print ""
-                    print "    Module name: " + module_object['module_title']
-                    print "    Module description: " + module_object['module_description']
-                    print ""
-                    print "        Group name: " + group_object['group_title']
-                    print "        Group description: " + group_object['group_description']
-                    print "        Group files: " + str(group_object['group_files'])
-                    print ""
+
     if not file_found:
         print "No file with name: " + file_name + " found.  Use the full path to the file starting at the root of the mongodb repo.  Data is based on MongoDB server version: " + version
 
