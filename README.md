@@ -29,6 +29,11 @@ source tree.  It's based on the notes in https://github.com/Zarkantho/module_dat
             - src/mongo/s/config_upgrade_v0_to_v5.cpp
             - src/mongo/s/config_upgrade_v4_to_v5.cpp
 
+## Requirements
+
+- PyYaml: http://pyyaml.org/wiki/PyYAML
+- python 2.7
+
 ## Notes
 
 - Currently all data is based on MongoDB server version 2.6.
